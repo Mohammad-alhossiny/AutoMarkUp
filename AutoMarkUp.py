@@ -77,7 +77,7 @@ def merge_dfs(quiz_df, grades_df, merge_col):
     merged_df = merged_df.drop(columns=['_merge'])
     failed_to_merge = failed_to_merge.drop(columns=['_merge'])
     # create csv of all bad emails
-    failed_to_merge.to_csv(f"failed_to_merge", index=False)
+    failed_to_merge.to_csv(f"failed_to_merge.csv ", index=False)
     print("Non-matching emails put in failed_to_merge.csv")
     return merged_df
 
@@ -103,7 +103,7 @@ def write_to_cloud(spread_sheet_df, spread_sheet_url, work_sheet_names, target_c
 
                 worksheet.update_cell(row_number, ord(target_col) - ord("A") + 1, grade_value)
                 print(f'Updated cell in sheet {worksheet} column {target_col} for row {row_number} with value {grade_value}, its email is {row["Email"]}')
-                sleep(.02)  # Avoid rate cap (~0.16)
+                sleep(.1)  # Avoid rate cap (~0.16)
 
             except Exception as e:
                 print(f'Target value "{row["Email"]}" caused an issue {repr(e)}')
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     sheet_list_2 = [f"Group {x}" for x in range(1, 5)]  # sheet names
     used_col_letter = "B"  # col. letter read for emails
     used_col_head = ["Index", "Email"]
-    target_col = "K"  # col. letter to write to
+    target_col = "N"  # col. letter to write to
 
     merge_column = "Email"
     # Specify the name of your environment variable
