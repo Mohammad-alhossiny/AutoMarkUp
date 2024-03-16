@@ -115,12 +115,12 @@ if __name__ == "__main__":
     # run specific variables:
 
     # Quiz spreadsheet
-    spread_sheet_url_1 = 'https://docs.google.com/spreadsheets/d/1oT8GTaLZ54Zy-8lnrxB_SZifJ7_rjHjNRN0bB8iXk9E/edit?resourcekey#gid=1083889653'  # url of quiz sheet
-    sheet_num_1 = 0
+    spread_sheet_url_1 = ''  # url of quiz sheet
+    sheet_index_1 = 0
     used_headers_1 = ['النتيجة', 'Your Group', 'Email']  # used headers from the sheet
     # Results spreadsheet
-    spread_sheet_url_2 = 'https://docs.google.com/spreadsheets/d/1n4IWMYYaRBDtrNYy13igf7Zy9xBePbxwBln2IxePMdc/edit#gid=1990273423'  # url of scoring sheet
-    sheet_num_2 = [f"Group {x}" for x in range(1, 5)]  # sheet names
+    spread_sheet_url_2 = ''  # url of scoring sheet
+    sheet_list_2 = [f"Group {x}" for x in range(1, 5)]  # sheet names
     used_col_letter = "B"  # col. letter read for emails
     used_col_head = ["Index", "Email"]
     target_col = "K"  # col. letter to write to
@@ -133,16 +133,16 @@ if __name__ == "__main__":
     json_data = read_google_json(google_json_file)
     client = g_authorise(json_data)
 
-    quiz_records_df = import_spreadsheet(spread_sheet_url_1, sheet_num_1, used_headers_1)
+    quiz_records_df = import_spreadsheet(spread_sheet_url_1, sheet_index_1, used_headers_1)
     quiz_records_df = rename_header(quiz_records_df, used_headers_1[0])
     quiz_records_df = clean_emails(quiz_records_df)
     quiz_records_df = extract_grade(quiz_records_df)
 
-    grade_records_df = import_spreadsheet(spread_sheet_url_2, sheet_num_2, target_col,used_col_letter)
+    grade_records_df = import_spreadsheet(spread_sheet_url_2, sheet_list_2, target_col, used_col_letter)
     grade_records_df.columns = used_col_head
     grade_records_df = clean_emails(grade_records_df)
 
     df_merged = merge_dfs(quiz_records_df, grade_records_df, merge_column)
 
-    write_to_cloud(df_merged, spread_sheet_url_2, sheet_num_2, target_col)
+    write_to_cloud(df_merged, spread_sheet_url_2, sheet_list_2, target_col)
 
