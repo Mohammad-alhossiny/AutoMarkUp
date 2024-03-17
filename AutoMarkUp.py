@@ -97,16 +97,25 @@ def write_to_cloud(spread_sheet_df, spread_sheet_url, work_sheet_names, target_c
 
         for trash_index, row in sheet_rows.iterrows():
             # write Grade to cell
-            try:
-                row_number = int(row["Index"] + 2)
-                grade_value = row["Grade"]
+            for attempt in range(10):
+                try:
+                    row_number = int(row["Index"] + 2)
+                    grade_value = row["Grade"]
 
-                worksheet.update_cell(row_number, ord(target_col) - ord("A") + 1, grade_value)
-                print(f'Updated cell in sheet {worksheet} column {target_col} for row {row_number} with value {grade_value}, its email is {row["Email"]}')
-                sleep(.1)  # Avoid rate cap (~0.16)
+                    worksheet.update_cell(row_number, ord(target_col) - ord("A") + 1, grade_value)
+                    print(f'Updated cell in sheet {worksheet} column {target_col} for row {row_number} with value {grade_value}, its email is {row["Email"]}')
 
-            except Exception as e:
-                print(f'Target value "{row["Email"]}" caused an issue {repr(e)}')
+                except gspread.exceptions.APIError:
+                    sleep(.5)
+                    continue
+
+                except Exception as e:
+                    print(f'Target value "{row["Email"]}" caused an issue {repr(e)}')
+
+                if attempt == 9:
+                    print(f'Target value "{row["Email"]}" failed to connect')
+
+                break
 
 
 if __name__ == "__main__":
