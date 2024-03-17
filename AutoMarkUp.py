@@ -111,10 +111,11 @@ def write_to_cloud(spread_sheet_df, spread_sheet_url, work_sheet_names, target_c
 
                 except Exception as e:
                     print(f'Target value "{row["Email"]}" caused an issue {repr(e)}')
+                    row.to_csv('failed_to_merge.csv', mode='a', index=False, header=False)
 
                 if attempt == 9:
                     print(f'Target value "{row["Email"]}" failed to connect')
-
+                    row.to_csv('failed_to_merge.csv', mode='a', index=False, header=False)
                 break
 
 
