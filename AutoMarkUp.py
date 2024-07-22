@@ -103,7 +103,7 @@ def write_to_cloud(spread_sheet_df, spread_sheet_url, work_sheet_names, target_c
                     grade_value = row["Grade"]
 
                     worksheet.update_cell(row_number, ord(target_col) - ord("A") + 1, grade_value)
-                    print(f'Updated cell in sheet {worksheet} column {target_col} for row {row_number} with value {grade_value}, its email is {row["Email"]}')
+                    print(f'Updated cell in sheet {worksheet} column {target_col} for row {row_number} with value {grade_value}, it\'s email is {row["Email"]}')
 
                 except gspread.exceptions.APIError:
                     sleep(.5)
@@ -130,10 +130,10 @@ if __name__ == "__main__":
     used_headers_1 = ['النتيجة', 'Your Group', 'Email']  # used headers from the sheet
     # Results spreadsheet
     spread_sheet_url_2 = ''  # url of scoring sheet
-    sheet_list_2 = [f"Group {x}" for x in range(1, 5)]  # sheet names
+    sheet_list_2 = [f"Group {x}" for x in range(1, 4)]  # sheet names
     used_col_letter = "B"  # col. letter read for emails
     used_col_head = ["Index", "Email"]
-    target_col = "N"  # col. letter to write to
+    target_col = ""  # col. letter to write to
 
     merge_column = "Email"
     # Specify the name of your environment variable
